@@ -1,6 +1,7 @@
 package userRoute
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"goPro4/utils"
 )
@@ -30,7 +31,9 @@ func userLogin(c *gin.Context) {
 	info := &loginUser{
 		UserName: user.UserName,
 	}
-	info.getUserInfoToName(user.UserName)
+
+	userInfo := info.getUserInfoToName(user.UserName)
+	fmt.Println(userInfo)
 	utils.Response(c, 200, "success", nil)
 }
 
