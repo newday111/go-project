@@ -1,0 +1,8 @@
+mysql:
+  host: "116.211.239.54"
+  port: 13306
+  user: "oms_user"
+  password: "oms@kilo.2021"
+  dbname: "oms_epg"
+  max_open_connects: 200
+  max_idle_connects: 50
