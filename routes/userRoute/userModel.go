@@ -2,6 +2,7 @@ package userRoute
 
 import (
 	"goPro4/db"
+	"goPro4/utils"
 )
 
 type loginUser struct {
@@ -12,6 +13,7 @@ type loginUser struct {
 
 func (userInfo *loginUser) getUserInfoToName(username string) *loginUser {
 	//	指定查询的表名
-	db.DB.Table("login_users").Select([]string{"name", "token", "is_valid"}).Where("name = ?", username).Find(&userInfo)
+	db.DB.Table("login_users").Select([]string{"name", "token", "is_valid"}).Where("name = ?", username).Find(userInfo)
+	utils.Info("userInfo query username -> " + userInfo.UserName)
 	return userInfo
 }
