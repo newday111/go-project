@@ -2,21 +2,24 @@ package utils
 
 import (
 	"fmt"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
-	"os"
 	"runtime"
 	"strings"
 )
 
 func InitLogger() error {
-	// 打开或创建日志文件
-	file, err := os.OpenFile("E:\\goPro\\goPro4\\logs\\logs.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
-	if err != nil {
-		return err
+
+	logFile := &lumberjack.Logger{
+		Filename:   "E:\\goPro\\goPro4\\logs\\logs.log",
+		MaxSize:    2,
+		MaxBackups: 3,
+		MaxAge:     28,
+		Compress:   true,
 	}
 
 	// 设置日志输出
-	log.SetOutput(file)
+	log.SetOutput(logFile)
 
 	// 设置日志格式
 	//log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
