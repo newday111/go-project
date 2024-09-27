@@ -12,7 +12,8 @@ func main() {
 	db.GetMysqlConnection()
 	utils.InitLogger()
 	ginRouter := gin.Default()
-	ginRouter.Use(middlewares.RecordLogs())
+	middlewares.InitMiddleware(ginRouter)
+	//ginRouter.Use(middlewares.RecordLogs())
 	allRoute.InitRouter(ginRouter)
 	ginRouter.Run(":8080")
 }
