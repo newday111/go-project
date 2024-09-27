@@ -10,7 +10,10 @@ func RecordLogs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//	这里需要记录请求路径 和 访问用户
 		c.Next()
-		userResponseInfo := fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", "xiaoming", c.Request.URL, c.Writer.Status())
-		utils.Info(userResponseInfo)
+		username, exists := c.Get("username")
+		if exists {
+			userResponseInfo := fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", username, c.Request.URL, c.Writer.Status())
+			utils.Info(userResponseInfo)
+		}
 	}
 }
