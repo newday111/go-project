@@ -8,12 +8,17 @@ import (
 
 func RecordLogs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//	这里需要记录请求路径 和 访问用户
+
 		c.Next()
+		//	这里需要记录请求路径 和 访问用户
+		userResponseInfo := ""
 		username, exists := c.Get("username")
 		if exists {
-			userResponseInfo := fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", username, c.Request.URL, c.Writer.Status())
-			utils.Info(userResponseInfo)
+			userResponseInfo = fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", username, c.Request.URL, c.Writer.Status())
+		} else {
+			//	从前端解密出来的token
+			userResponseInfo = fmt.Sprintf("request_url: %s | response_status: %d", c.Request.URL, c.Writer.Status())
 		}
+		utils.Info(userResponseInfo)
 	}
 }
