@@ -6,3 +6,7 @@ mysql:
   dbname: "oms_epg"
   max_open_connects: 200
   max_idle_connects: 50
+
+cookies:
+  cook_path: "/v1/user/login"
+  cook_ip: "127.0.0.1"
