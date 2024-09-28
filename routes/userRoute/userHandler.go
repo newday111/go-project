@@ -2,6 +2,7 @@ package userRoute
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"goPro4/utils"
 )
 
@@ -33,6 +34,11 @@ func userLogin(c *gin.Context) {
 
 	userInfo := info.getUserInfoToName(user.UserName)
 	c.Set("username", userInfo.UserName)
+
+	cookPath := viper.GetString("cookies.cook_path")
+	cookIp := viper.GetString("cookies.cook_ip")
+	c.SetCookie("username", "小明", 3600, cookPath, cookIp, false, false)
+
 	utils.Response(c, 200, "success", nil)
 }
 
