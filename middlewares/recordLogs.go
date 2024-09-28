@@ -16,8 +16,12 @@ func RecordLogs() gin.HandlerFunc {
 		if exists {
 			userResponseInfo = fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", username, c.Request.URL, c.Writer.Status())
 		} else {
+			cookieUserName, err := c.Cookie("username")
+			if err != nil {
+				utils.Error(err.Error())
+			}
 			//	从前端解密出来的token
-			userResponseInfo = fmt.Sprintf("request_url: %s | response_status: %d", c.Request.URL, c.Writer.Status())
+			userResponseInfo = fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", cookieUserName, c.Request.URL, c.Writer.Status())
 		}
 		utils.Info(userResponseInfo)
 	}
