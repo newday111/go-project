@@ -26,7 +26,7 @@ func getUserStruct(c *gin.Context) (*User, error) {
 func userLogin(c *gin.Context) {
 	user, err := getUserStruct(c)
 	if err != nil {
-		utils.Response(c, 400, "参数错误", nil)
+		utils.Response(c, utils.RespParamsError, utils.RespMsg[utils.RespParamsError], nil)
 		return
 	}
 
@@ -43,7 +43,7 @@ func userLogin(c *gin.Context) {
 	})
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		utils.Response(c, 400, "token生成失败", nil)
+		utils.Response(c, utils.RespCreateTokenFail, utils.RespMsg[utils.RespCreateTokenFail], nil)
 		return
 	}
 	c.Header("Authorization", tokenString)
@@ -53,7 +53,7 @@ func userLogin(c *gin.Context) {
 	cookIp := viper.GetString("cookies.cook_ip")
 	c.SetCookie("username", "小明", 3600, cookPath, cookIp, false, false)
 
-	utils.Response(c, 200, "success", nil)
+	utils.Response(c, utils.RespSuccess, utils.RespMsg[utils.RespSuccess], nil)
 }
 
 func userRegister(c *gin.Context) {
