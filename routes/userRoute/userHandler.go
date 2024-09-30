@@ -1,9 +1,11 @@
 package userRoute
 
 import (
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"goPro4/utils"
+	"time"
 )
 
 type User struct {
@@ -33,6 +35,18 @@ func userLogin(c *gin.Context) {
 	}
 
 	userInfo := info.getUserInfoToName(user.UserName)
+
+	jwtKey := []byte(viper.GetString("login_auth.secret_key"))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": userInfo.UserName,
+		"exp":      time.Now().Add(time.Hour * 24).Unix(), // 设置过期时间为24小时后
+	})
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		utils.Response(c, 400, "token生成失败", nil)
+		return
+	}
+	c.Header("Authorization", tokenString)
 	c.Set("username", userInfo.UserName)
 
 	cookPath := viper.GetString("cookies.cook_path")
