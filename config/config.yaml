@@ -10,3 +10,7 @@ mysql:
 cookies:
   cook_path: "/v1/user/login"
   cook_ip: "127.0.0.1"
+
+
+login_auth:
+  secret_key: "384FJ./@ADJFAEWrerewori,,...@$*(^%"
