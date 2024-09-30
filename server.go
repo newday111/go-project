@@ -13,7 +13,6 @@ func main() {
 	utils.InitLogger()
 	ginRouter := gin.Default()
 	middlewares.InitMiddleware(ginRouter)
-	//ginRouter.Use(middlewares.RecordLogs())
 	allRoute.InitRouter(ginRouter)
 	ginRouter.Run(":8080")
 }
