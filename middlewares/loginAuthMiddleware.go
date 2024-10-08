@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"goPro4/utils"
 	"net/http"
 )
 
@@ -27,6 +28,11 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("username", claims["username"])
+		} else {
+			//	校验不通过阻止请求继续执行
+			c.Abort()
+			utils.Response(c, 403, "用户校验失败", make(map[string]string))
+			return
 		}
 		c.Next()
 	}
