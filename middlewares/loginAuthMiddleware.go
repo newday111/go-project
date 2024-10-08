@@ -31,7 +31,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		} else {
 			//	校验不通过阻止请求继续执行
 			c.Abort()
-			utils.Response(c, 403, "用户校验失败", make(map[string]string))
+			utils.Response(c, utils.RespAuthFail, utils.RespMsg[utils.RespAuthFail], make(map[string]string))
 			return
 		}
 		c.Next()
