@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
 	"runtime"
@@ -9,9 +10,9 @@ import (
 )
 
 func InitLogger() error {
-
+	logPath := viper.GetString("log_file.log_path")
 	logFile := &lumberjack.Logger{
-		Filename:   "E:\\goPro\\goPro4\\logs\\logs.log",
+		Filename:   logPath,
 		MaxSize:    2,
 		MaxBackups: 3,
 		MaxAge:     28,
