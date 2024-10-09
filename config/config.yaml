@@ -14,3 +14,6 @@ cookies:
 
 login_auth:
   secret_key: "384FJ./@ADJFAEWrerewori,,...@$*(^%"
+
+log_file:
+  log_path: "E:\\goPro\\goPro4\\logs\\logs.log"
