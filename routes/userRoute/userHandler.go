@@ -36,16 +36,20 @@ func userLogin(c *gin.Context) {
 
 	userInfo := info.getUserInfoToName(user.UserName)
 
+	//	生成token
 	jwtKey := []byte(viper.GetString("login_auth.secret_key"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": userInfo.UserName,
 		"exp":      time.Now().Add(time.Hour * 24).Unix(), // 设置过期时间为24小时后
 	})
+
+	//	返回字符串token,并且校验是否生成token成功
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		utils.Response(c, utils.RespCreateTokenFail, utils.RespMsg[utils.RespCreateTokenFail], nil)
 		return
 	}
+
 	c.Header("Authorization", tokenString)
 	c.Set("username", userInfo.UserName)
 
