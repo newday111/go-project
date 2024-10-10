@@ -17,3 +17,11 @@ login_auth:
 
 log_file:
   log_path: "E:\\goPro\\goPro4\\logs\\logs.log"
+
+
+
+email_config:
+  smtp_host: "smtp.qq.com"
+  smtp_port: 465
+  smtp_user: "jackgeng1314@qq.com"
+  smtp_pass: "frmnctgttqdddhce"
