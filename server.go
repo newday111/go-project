@@ -10,9 +10,14 @@ import (
 
 func main() {
 	db.GetMysqlConnection()
+
 	utils.InitLogger()
+
 	ginRouter := gin.Default()
+
 	middlewares.InitMiddleware(ginRouter)
+
 	allRoute.InitRouter(ginRouter)
+
 	ginRouter.Run(":8080")
 }
