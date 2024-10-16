@@ -32,4 +32,7 @@ func TestGorm(t *testing.T) {
 		//	最后注册第三个配置，为 orders 和 Product 表指定不同的主从库
 		Sources:  []gorm.Dialector{mysql.Open("db7"), mysql.Open("db8")},
 		Replicas: []gorm.Dialector{mysql.Open("db9")}}, "orders", &Product{}, "secondary"))
+	if err != nil {
+		t.Fatal(err)
+	}
 }
