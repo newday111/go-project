@@ -1,4 +1,4 @@
-### Send POST request with json body
+### Send POST request with json body Test login API
 # @no-cookie-jar
 POST http://127.0.0.1:8080/v1/user/login
 Content-Type: application/json
@@ -8,7 +8,7 @@ Content-Type: application/json
   "password": "xiaoming123.."
 }
 
-### Send POST request with json body
+### Send POST request with json body Test update album information API
 # @no-cookie-jar
 POST http://127.0.0.1:8080/v1/alb/update/album
 Content-Type: application/json
