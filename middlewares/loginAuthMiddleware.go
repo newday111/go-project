@@ -29,10 +29,10 @@ func AuthMiddleware() gin.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("username", claims["username"])
 		} else {
+			utils.Info("token失效,重新登录")
+			utils.Response(c, utils.RecordLogTokenExpire, utils.UserTokenExpire, utils.UserRespMsg[utils.UserTokenExpire], make(map[string]string))
 			//	校验不通过阻止请求继续执行
 			c.Abort()
-			utils.Response(c, utils.RespAuthFail, utils.RespMsg[utils.RespAuthFail], make(map[string]string))
-			return
 		}
 		c.Next()
 	}
