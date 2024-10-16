@@ -1,0 +1,17 @@
+### Send POST request with json body
+# @no-cookie-jar
+POST http://127.0.0.1:8080/v1/user/login
+Content-Type: application/json
+
+{
+  "username": "hbcmcc_user01@51jzcloud.com",
+  "password": "xiaoming123.."
+}
+
+### Send POST request with json body
+# @no-cookie-jar
+POST http://127.0.0.1:8080/v1/alb/update/album
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjkxMzIyODMsInVzZXJuYW1lIjoiaGJjbWNjX3VzZXIwMUA1MWp6Y2xvdWQuY29tIn0.e-cJfOalH8SKzr6TmLPNaaszG0fganf8ljMq-VwDSno
+
+{}
