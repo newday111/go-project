@@ -16,7 +16,7 @@ func RecordLogs() gin.HandlerFunc {
 		if exists {
 			userResponseInfo = fmt.Sprintf("user_account: %s | request_url: %s | response_status: %d", username, c.Request.URL, c.Writer.Status())
 		} else {
-			userResponseInfo = "从上下文中获取不到用户账号"
+			userResponseInfo = fmt.Sprintf("request_url: %s | 从上下文中获取不到用户账号", c.Request.URL)
 		}
 		utils.Info(userResponseInfo)
 	}
