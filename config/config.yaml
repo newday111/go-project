@@ -1,9 +1,9 @@
 mysql:
-  host: "116.211.239.54"
+  host: "223.72.199.166"
   port: 13306
-  user: "oms_user"
-  password: "oms@kilo.2021"
-  dbname: "oms_epg"
+  user: "maxianhui"
+  password: "hswj@3Sh55w95dtNb"
+  dbname: "db_gs_hswj"
   max_open_connects: 200
   max_idle_connects: 50
 
