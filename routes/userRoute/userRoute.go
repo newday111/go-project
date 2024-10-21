@@ -9,5 +9,6 @@ func InitUserRouter(Router *gin.RouterGroup) {
 	{
 		userRoute.POST("/login", userLogin)
 		userRoute.POST("/register", userRegister)
+		userRoute.POST("/code", userLoginVerificationCode)
 	}
 }
