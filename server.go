@@ -10,6 +10,7 @@ import (
 
 func main() {
 	db.GetMysqlConnection()
+	db.GetRedisConnection()
 
 	utils.InitLogger()
 
