@@ -4,9 +4,32 @@ POST http://127.0.0.1:8080/v1/user/login
 Content-Type: application/json
 
 {
-  "username": "hbcmcc_user01@51jzcloud.com",
-  "password": "xiaoming123.."
+  "username": "gaidihu@qq.com",
+  "password": "123456"
 }
+
+
+### Send POST request with json body Test register API
+# @no-cookie-jar
+POST http://127.0.0.1:8080/v1/user/register
+Content-Type: application/json
+
+{
+  "name": "luckyboy",
+  "password": "xiaoming123..",
+  "email": "1750930311@qq.com"
+}
+
+### Send POST request with json body Test login verification Code API
+# @no-cookie-jar
+POST http://127.0.0.1:8080/v1/user/code
+Content-Type: application/json
+
+{
+  "email": "1750930322@qq.com"
+}
+
+
 
 ### Send POST request with json body Test update album information API
 # @no-cookie-jar
