@@ -4,17 +4,26 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/spf13/viper"
 	"time"
 )
 
 var Rdb *redis.Client
 
 func GetRedisConnection() {
+
+	redisIp := viper.GetString("redis.host")
+	redisPort := viper.GetString("redis.port")
+	redisDb := viper.GetInt("redis.db")
+	redisPool := viper.GetInt("redis.pool")
+
+	ipPort := fmt.Sprintf("%s:%s", redisIp, redisPort)
+
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:         "127.0.0.0:6379",
+		Addr:         ipPort,
 		Password:     "",
-		DB:           0,
-		PoolSize:     10,
+		DB:           redisDb,
+		PoolSize:     redisPool,
 		MinIdleConns: 5,
 		MaxRetries:   3,
 		DialTimeout:  5 * time.Second,
