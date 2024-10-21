@@ -9,6 +9,7 @@ const loginUserTableName = "user_info"
 type loginUser struct {
 	Name    string `gorm:"name"`
 	Token   string `gorm:"token"`
+	Email   string `gorm:"email"`
 	IsValid int    `gorm: "is_valid"`
 }
 
