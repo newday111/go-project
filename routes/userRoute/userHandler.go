@@ -4,12 +4,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"goPro4/db"
 	"goPro4/utils"
 	"time"
 )
 
 type User struct {
-	UserName string `json:"username"`
+	Name     string `json:"name"`
 	PassWord string `json:"password"`
 	Email    string `json:"email"`
 }
@@ -37,10 +38,10 @@ func userLogin(c *gin.Context) {
 	//	query user information and verify it
 
 	userInfo := &loginUser{}
-	userInfo.getUserInfoToName(user.UserName)
+	userInfo.getUserInfoToName(user.Name, user.Name)
 
 	if userInfo.Name == "" {
-		utils.Error(utils.UserRespMsg[utils.UserQueryFailed] + user.UserName)
+		utils.Error(utils.UserRespMsg[utils.UserQueryFailed] + user.Name)
 		utils.Response(c, utils.RecordLogGetFail, utils.UserQueryFailed, utils.UserRespMsg[utils.UserQueryFailed], nil)
 		return
 	}
@@ -57,7 +58,7 @@ func userLogin(c *gin.Context) {
 
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		utils.Error(utils.UserRespMsg[utils.UserTokenCreateFailed] + "=====>" + user.UserName)
+		utils.Error(utils.UserRespMsg[utils.UserTokenCreateFailed] + "=====>" + user.Name)
 		utils.Response(c, utils.RecordLogCreateFail, utils.UserTokenCreateFailed, utils.UserRespMsg[utils.UserTokenCreateFailed], nil)
 		return
 	}
@@ -72,5 +73,51 @@ func userLogin(c *gin.Context) {
 }
 
 func userRegister(c *gin.Context) {
-	//utils.Response(c,200, "success", nil)
+	user, err := getUserStruct(c)
+	if err != nil {
+		utils.Error(utils.UserRespMsg[utils.UserParamsAnalysisFailed])
+		utils.Response(c, utils.RecordLogGetFail, utils.UserParamsAnalysisFailed, utils.UserRespMsg[utils.UserParamsAnalysisFailed], nil)
+		return
+	}
+	utils.SetContextValue(c, "username", user.Name+"<===>"+user.Email)
+
+	//	用户名和邮箱都必须是唯一的
+	userInfo := &loginUser{}
+
+	userInfo.getUserInfoToName(user.Name, user.Email)
+	if userInfo.Name != "" {
+		utils.Info("已经存在该用户" + "====" + user.Name + "====" + user.Email)
+		utils.Response(c, utils.RecordLogCreateFail, utils.UserCreateFailed, utils.UserRespMsg[utils.UserCreateFailed], nil)
+		return
+	}
+
+	//	获取密码进行加密
+	user.PassWord, err = utils.EncryptionPassWord(user.PassWord, user.Name)
+	if err != nil {
+		utils.Error(utils.UserRespMsg[utils.UserParamsAnalysisFailed] + "====" + "")
+		return
+	}
+
+	_, err = userInfo.registerUser(user)
+	if err != nil {
+		utils.Error(err.Error() + "====" + user.Name + "====" + "注册失败")
+		utils.Response(c, utils.RecordLogCreateFail, utils.UserRegisterFailed, utils.UserRespMsg[utils.UserRegisterFailed], nil)
+		return
+	}
+	utils.Response(c, utils.RecordLogSuccess, utils.UserRegisterSuccess, utils.UserRespMsg[utils.UserRegisterSuccess], nil)
+}
+
+func userLoginVerificationCode(c *gin.Context) {
+	user, err := getUserStruct(c)
+	if err != nil {
+		utils.Error(utils.UserRespMsg[utils.UserParamsAnalysisFailed])
+		utils.Response(c, utils.RecordLogGetFail, utils.UserParamsAnalysisFailed, utils.UserRespMsg[utils.UserParamsAnalysisFailed], nil)
+		return
+	}
+
+	code := utils.RandomGenerateVerificationCode(5)
+	//	存储验证码到redis中,并且设置过期时间、
+	db.Rdb.Set(c, user.Email, code, 5*time.Minute)
+	go utils.SendEmail(user.Email, "验证码", "验证码为:"+code+",验证码有效时间为5分钟")
+	utils.Response(c, utils.RecordLogSuccess, utils.VerificationCodeSendSuccess, utils.VerificationCodeRespMsg[utils.VerificationCodeSendSuccess], nil)
 }
