@@ -1,6 +1,7 @@
 package userRoute
 
 import (
+	"context"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -10,9 +11,10 @@ import (
 )
 
 type User struct {
-	Name     string `json:"name"`
-	PassWord string `json:"password"`
-	Email    string `json:"email"`
+	Name             string `json:"name"`
+	PassWord         string `json:"password"`
+	Email            string `json:"email"`
+	VerificationCode string `json:"code"`
 }
 
 func getUserStruct(c *gin.Context) (*User, error) {
@@ -114,10 +116,23 @@ func userLoginVerificationCode(c *gin.Context) {
 		utils.Response(c, utils.RecordLogGetFail, utils.UserParamsAnalysisFailed, utils.UserRespMsg[utils.UserParamsAnalysisFailed], nil)
 		return
 	}
+	ctx := context.Background()
+	emailToCode, err := db.Rdb.Get(ctx, user.Email).Result()
+	if err != nil {
+		utils.Error(err.Error() + "====>" + user.Email)
+		return
+	}
 
-	code := utils.RandomGenerateVerificationCode(5)
-	//	存储验证码到redis中,并且设置过期时间、
-	db.Rdb.Set(c, user.Email, code, 5*time.Minute)
-	go utils.SendEmail(user.Email, "验证码", "验证码为:"+code+",验证码有效时间为5分钟")
-	utils.Response(c, utils.RecordLogSuccess, utils.VerificationCodeSendSuccess, utils.VerificationCodeRespMsg[utils.VerificationCodeSendSuccess], nil)
+	if emailToCode == "" {
+		code := utils.RandomGenerateVerificationCode(5)
+		//	存储验证码到redis中,并且设置过期时间、
+		db.Rdb.Set(c, user.Email, code, 5*time.Minute)
+		go utils.SendEmail(user.Email, "机壳空间验证码", "验证码为:"+code+",验证码有效时间为5分钟")
+		utils.SetContextValue(c, "username", user.Email)
+		utils.Response(c, utils.RecordLogSuccess, utils.VerificationCodeSendSuccess, utils.VerificationCodeRespMsg[utils.VerificationCodeSendSuccess], nil)
+		return
+	}
+
+	utils.Response(c, utils.RecordLogGetFail, utils.VerificationCodeExist, utils.VerificationCodeRespMsg[utils.VerificationCodeExist], nil)
+
 }
