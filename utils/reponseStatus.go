@@ -20,11 +20,6 @@ const (
 	UserTokenExpire          = 405
 	UserCreateFailed         = 406
 	UserRegisterFailed       = 407
-	//RespGetDataSuccess  = 201
-	//RespParamsError     = 400
-	//RespAuthFail        = 401
-	//RespCreateTokenFail = 402
-	//RespFail            = 500
 )
 
 var UserRespMsg = map[int]string{
@@ -42,9 +37,11 @@ var UserRespMsg = map[int]string{
 }
 
 const (
-	VerificationCodeSendSuccess = 400
+	VerificationCodeSendSuccess = 600
+	VerificationCodeExist       = 601
 )
 
 var VerificationCodeRespMsg = map[int]string{
-	400: "验证码发送成功",
+	600: "验证码发送成功",
+	601: "验证码已经存在",
 }
