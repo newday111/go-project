@@ -4,8 +4,9 @@ POST http://127.0.0.1:8080/v1/user/login
 Content-Type: application/json
 
 {
-  "username": "gaidihu@qq.com",
-  "password": "123456"
+  "name": "1750930311@qq.com",
+  "password": "123456",
+  "code": "234423"
 }
 
 
